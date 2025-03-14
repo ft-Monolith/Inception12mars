@@ -22,13 +22,16 @@ else
     sed -i "s/password_here/${MYSQL_PASSWORD}/" wp-config.php
     sed -i "s/localhost/${WORDPRESS_DB_HOST}/" wp-config.php
 
+    #est-ce obligatoire le secret key?
     SECRET_KEYS=$(php -r "echo file_get_contents('https://api.wordpress.org/secret-key/1.1/salt/', false, stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]));")
     awk -v keys="$SECRET_KEYS" '/That'\''s all, stop editing! Happy publishing\./ {print keys; print; next}1' wp-config.php > wp-config.new && mv wp-config.new wp-config.php
 
     echo "define('WP_HOME', '${WORDPRESS_URL}');" >> wp-config.php
     echo "define('WP_SITEURL', '${WORDPRESS_URL}');" >> wp-config.php
 
-    echo "Ajustement des permissions..."
+    #donne la propriete des fichiers a www-data(user use by php &nginx)
+    #full access proprietaires et r + x pour les autres
+    echo "Ajustement des permissions pour php et nginx"
     chown -R www-data:www-data /var/www/wordpress
     chmod -R 755 /var/www/wordpress
 

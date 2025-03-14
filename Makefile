@@ -12,7 +12,7 @@ prepare:
 stop:
 	docker-compose -f srcs/docker-compose.yml down
 
-# Nettoie les containers, images, réseaux et fichiers des volumes inutilisés
+# Nettoie les containers, images, réseaux et fichiers des volumes inutilisés, prune remove orphans
 clean: stop
 	sudo docker system prune -af --volumes
 	sudo docker volume rm $$(docker volume ls -qf dangling=true)

@@ -16,7 +16,6 @@ RUN chown -R www-data:www-data /var/www/html
 # Copier les fichiers de configuration NGINX
 COPY conf/nginx.conf /etc/nginx/conf.d
 
-
 # Copier le script de setup pour générer le certificat SSL auto-signé et configurer Nginx
 COPY tools/setup.sh /usr/local/bin/setup.sh
 RUN chmod +x /usr/local/bin/setup.sh
